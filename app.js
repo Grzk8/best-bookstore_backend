@@ -8,8 +8,6 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use('/api/items', itemsRoutes);
-
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers',
@@ -17,6 +15,8 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATH, DELETE');
     next();
 });
+
+app.use('/api/items', itemsRoutes);
 
 mongoose
     .connect('mongodb+srv://grzesiek:grzesiek@cluster0.wcshf.mongodb.net/best-bookstore?retryWrites=true&w=majority')

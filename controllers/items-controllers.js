@@ -1,8 +1,6 @@
 const Item = require('../models/item');
 
-
 const getItemsByCategory = async (req, res, next) => {
-    
     const category = req.body;
     let categoryResponse;
 
