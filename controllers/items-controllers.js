@@ -1,11 +1,34 @@
 const Item = require('../models/item');
 
+const getItemById = async (req, res, next) => {
+    const itemId = req.params.id;
+    let itemById;
+
+    console.log(itemId);
+
+    try {
+        itemById = await Item.findById(itemId);
+    } catch {
+        const error = new Error('Items not found');
+        error.code = 500;
+        return next(error);
+    }
+
+    if (!itemById) {
+        const error = new Error('No item found');
+        error.code = 500;
+        return next(error);
+    }
+    res.json({ item: item });
+
+};
+
 const getItemsByCategory = async (req, res, next) => {
-    const category = req.body;
+    const category = req.params.category;
     let categoryResponse;
 
     try {
-        categoryResponse = await Item.find({ category: category.category });
+        categoryResponse = await Item.find({ category: category });
     } catch {
         const error = new Error('Items not found');
         error.code = 500;
@@ -38,5 +61,6 @@ const createItem = async (req, res, next) => {
     res.status(201).json({ item: newItem });
 };
 
+exports.getItemById = getItemById;
 exports.createItem = createItem;
 exports.getItemsByCategory = getItemsByCategory;

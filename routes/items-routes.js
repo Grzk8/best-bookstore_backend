@@ -4,7 +4,8 @@ const itemsControllers = require('../controllers/items-controllers');
 
 const router = express.Router();
 
-router.post('/category', itemsControllers.getItemsByCategory)
+router.get('/category/:category', itemsControllers.getItemsByCategory);
+router.get('/description/:id', itemsControllers.getItemById);
 router.post('/', itemsControllers.createItem);
 
 module.exports = router;
