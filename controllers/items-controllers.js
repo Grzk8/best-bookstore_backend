@@ -4,8 +4,6 @@ const getItemById = async (req, res, next) => {
     const itemId = req.params.id;
     let itemById;
 
-    console.log(itemId);
-
     try {
         itemById = await Item.findById(itemId);
     } catch {
@@ -19,8 +17,7 @@ const getItemById = async (req, res, next) => {
         error.code = 500;
         return next(error);
     }
-    res.json({ item: item });
-
+    res.json({ item: itemById });
 };
 
 const getItemsByCategory = async (req, res, next) => {
@@ -35,6 +32,20 @@ const getItemsByCategory = async (req, res, next) => {
         return next(error);
     }
     res.json({ category: categoryResponse });
+};
+
+const getItemByNewest = async (req, res, next) => {
+    let newestResponse
+
+    try {
+        newestResponse = await Item.find().sort({ createdAt: -1 }).limit(10) 
+    } catch {
+        const error = new Error('Items not found');
+        error.code = 500;
+        return next(error);
+    }
+    console.log(newestResponse);
+    res.json({ newest: newestResponse.title });
 };
 
 const createItem = async (req, res, next) => {
@@ -63,4 +74,5 @@ const createItem = async (req, res, next) => {
 
 exports.getItemById = getItemById;
 exports.createItem = createItem;
+exports.getItemByNewest = getItemByNewest;
 exports.getItemsByCategory = getItemsByCategory;
