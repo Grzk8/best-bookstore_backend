@@ -38,14 +38,34 @@ const getItemByNewest = async (req, res, next) => {
     let newestResponse
 
     try {
-        newestResponse = await Item.find().sort({ createdAt: -1 }).limit(10) 
+        newestResponse = await Item.find().sort({ createdAt: -1 }).limit(10)
     } catch {
         const error = new Error('Items not found');
         error.code = 500;
         return next(error);
     }
     console.log(newestResponse);
-    res.json({ newest: newestResponse.title });
+    res.json({ newest: newestResponse });
+};
+
+const postSearch = async (req, res, next) => {
+    const { searching } = req.body;
+    let searchResponse;
+
+    try {
+        searchResponse = await Item.find({
+            $or: [
+                { title: { $regex: searching, $options: "i" } },
+                { author: { $regex: searching, $options: "i" } }
+            ]
+        });
+    } catch {
+        const error = new Error('Items not found');
+        error.code = 500;
+        return next(error);
+    }
+    console.log(searchResponse);
+    res.json({ search: searchResponse });
 };
 
 const createItem = async (req, res, next) => {
@@ -76,3 +96,4 @@ exports.getItemById = getItemById;
 exports.createItem = createItem;
 exports.getItemByNewest = getItemByNewest;
 exports.getItemsByCategory = getItemsByCategory;
+exports.postSearch = postSearch;
