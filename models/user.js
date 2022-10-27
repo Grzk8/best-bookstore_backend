@@ -4,7 +4,6 @@ const uniqueValidator = require('mongoose-unique-validator');
 const Shema = mongoose.Schema;
 
 const userSchema = new Shema({
-    login: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     firstName: { type: String, required: true },
@@ -12,7 +11,7 @@ const userSchema = new Shema({
     street: { type: String, required: true },
     houseNr: { type: String, required: true },
     town: { type: String, required: true },
-    postNr: { type: String, required: true },
+    postCode: { type: String, required: true },
     phoneNr: { type: String, required: true },
     orders: {
         items: [
