@@ -103,7 +103,7 @@ const login = async (req, res, next) => {
 
     let token;
     try {
-        token = jwt.sign({ userId: userExist.id, email: userExist.email }, 'qweasd135', { expiresIn: '1h' });
+        token = jwt.sign({ userId: userExist.id, email: userExist.email }, 'qweasd123', { expiresIn: '1h' });
     } catch (err) {
         const error = new Error('Logging in failed');
         error.code = 500;
