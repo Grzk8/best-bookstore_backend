@@ -10,7 +10,7 @@ router.get('/description/:id', itemsControllers.getItemById);
 router.get('/newest', itemsControllers.getItemByNewest);
 router.post('/search', itemsControllers.postSearch);
 
-router.use(checkAutch);
-router.post('/', itemsControllers.createItem);
+//router.use(checkAutch);
+router.post('/createItem', itemsControllers.createItem);
 
 module.exports = router;

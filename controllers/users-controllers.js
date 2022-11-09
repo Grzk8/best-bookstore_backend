@@ -71,6 +71,8 @@ const signup = async (req, res, next) => {
 const login = async (req, res, next) => {
     const { email, password } = req.body;
 
+    console.log(email, password)
+
     let userExist;
     try {
         userExist = await User.findOne({ email: email });
@@ -90,7 +92,7 @@ const login = async (req, res, next) => {
     try {
         isValidPassword = await bcrypt.compare(password, existiingUser.password);
     } catch (err) {
-        const error = new Error('Logging in faild, tyr again');
+        const error = new Error('Logging in faild, try again');
         error.code = 500;
         return next(error);
     }
