@@ -12,6 +12,7 @@ const signup = async (req, res, next) => {
     }
 
     const { email, password, firstName, lastName, street, houseNr, postCode, town, phoneNr } = req.body;
+
     let userExist;
     console.log(req.body)
     try {
@@ -45,7 +46,8 @@ const signup = async (req, res, next) => {
         houseNr,
         postCode,
         town,
-        phoneNr
+        phoneNr,
+        orders: []
     });
 
     try {
@@ -90,9 +92,9 @@ const login = async (req, res, next) => {
 
     let isValidPassword = false;
     try {
-        isValidPassword = await bcrypt.compare(password, existiingUser.password);
+        isValidPassword = await bcrypt.compare(password, userExist.password);
     } catch (err) {
-        const error = new Error('Logging in faild, try again');
+        const error = new Error('Logging in faild, try again ');
         error.code = 500;
         return next(error);
     }
@@ -112,7 +114,7 @@ const login = async (req, res, next) => {
         return next(error);
     }
 
-    res.json({ user: userExist, token });
+    res.json({ user: userExist.id, email: userExist.email, token });
 };
 
 exports.signup = signup;
