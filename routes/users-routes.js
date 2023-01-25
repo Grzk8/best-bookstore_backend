@@ -34,5 +34,6 @@ router.post('/signup', [
         .not()
         .isEmpty(),
 ], usersControllers.signup);
+router.post('/order', usersControllers.newOrder);
 
 module.exports = router;

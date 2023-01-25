@@ -1,7 +1,9 @@
 const User = require('../models/user');
+const Order = require('../models/order');
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 
 const signup = async (req, res, next) => {
     const errors = validationResult(req);
@@ -117,5 +119,51 @@ const login = async (req, res, next) => {
     res.json({ user: userExist.id, email: userExist.email, token });
 };
 
+const newOrder = async (req, res, next) => {
+    const { date, books, price, creator } = req.body;
+
+    const addOrder = new Order({
+        date,
+        books,
+        price,
+        creator
+    });
+
+    let user;
+    try {
+        user = await User.findById(creator);
+    } catch (err) {
+        const error = new HttpError(
+            'Creating order failed, please try again.',
+            500
+        );
+        return next(error);
+    }
+
+    if (!user) {
+        const error = new HttpError('Could not find user for provided id.', 404);
+        return next(error);
+    }
+
+    try {
+        const sess = await mongoose.startSession();
+        sess.startTransaction();
+        await addOrder.save({ session: sess });
+        user.orders.push(addOrder);
+        await user.save({ session: sess });
+        await sess.commitTransaction();
+    } catch (err) {
+        const error = new HttpError(
+            'Creating order failed, please try again.',
+            500
+        );
+        return next(error);
+    }
+
+    res.status(201).json({ orders: addOrder });
+
+};
+
 exports.signup = signup;
 exports.login = login;
+exports.newOrder = newOrder;

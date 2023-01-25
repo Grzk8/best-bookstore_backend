@@ -13,11 +13,7 @@ const userSchema = new Shema({
     town: { type: String, required: true },
     postCode: { type: String, required: true },
     phoneNr: { type: String, required: true },
-    orders: {
-        items: [
-            { type: mongoose.Types.ObjectId, required: true, ref: 'Item' }
-        ]
-    }
+    orders: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Order' }]
 });
 userSchema.plugin(uniqueValidator);
 
