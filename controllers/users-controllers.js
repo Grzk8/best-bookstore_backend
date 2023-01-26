@@ -119,6 +119,56 @@ const login = async (req, res, next) => {
     res.json({ user: userExist.id, email: userExist.email, token });
 };
 
+const updateUser = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const error = new Error('Invalid data, check your data');
+        error.code = 422;
+        return next(error);
+    }
+
+    const { id, password, firstName, lastName, street, houseNr, postCode, town, phoneNr } = req.body;
+
+
+    let user;
+    console.log(req.body)
+    try {
+        user = await User.findById(id);
+    } catch {
+        const error = new Error('User already exist');
+        error.code = 500;
+        return next(error);
+    }
+
+    user.firstName = firstName;
+    user.lastName = lastName;
+    user.street = street;
+    user.houseNr = houseNr;
+    user.postCode = postCode;
+    user.town = town;
+    user.phoneNr = phoneNr
+
+
+    try {
+        await user.save();
+    } catch (err) {
+        const error = new Error('Signing up failed');
+        error.code = 500;
+        return next(error);
+    }
+
+    // let token;
+    // try {
+    //     token = jwt.sign({ userId: createUser.id, email: createUser.email }, 'qweasd123', { expiresIn: '1h' });
+    // } catch (err) {
+    //     const error = new Error('Signing up failed');
+    //     error.code = 500;
+    //     return next(error);
+    // }
+
+    res.status(201).json({ user })
+};
+
 const newOrder = async (req, res, next) => {
     const { date, books, price, creator } = req.body;
 
@@ -161,9 +211,34 @@ const newOrder = async (req, res, next) => {
     }
 
     res.status(201).json({ orders: addOrder });
-
 };
+
+const getUsersOrders = async (req, res, next) => {
+    const userId = req.params.uid;
+
+    let usersOrders;
+    try {
+        usersOrders = await User.findById(userId).populate('orders');
+    } catch (err) {
+        const error = new Error('Fetching orders failed');
+        error.code = 500;
+        return next(error);
+    }
+
+    if (!usersOrders || usersOrders.orders.length === 0) {
+        const error = new Error('Orders not found');
+        error.code = 500;
+        return next(error);
+    }
+
+    res.json({
+        orders: usersOrders.orders
+    });
+};
+
 
 exports.signup = signup;
 exports.login = login;
+exports.updateUser = updateUser;
 exports.newOrder = newOrder;
+exports.getUsersOrders = getUsersOrders;

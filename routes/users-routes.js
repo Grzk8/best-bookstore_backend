@@ -34,6 +34,33 @@ router.post('/signup', [
         .not()
         .isEmpty(),
 ], usersControllers.signup);
+
+router.patch('/updatedata', [
+    check('password')
+        .isLength({ min: 6 }),
+    check('firstName')
+        .not()
+        .isEmpty(),
+    check('lastName')
+        .not()
+        .isEmpty(),
+    check('street')
+        .not()
+        .isEmpty(),
+    check('houseNr')
+        .not()
+        .isEmpty(),
+    check('town')
+        .not()
+        .isEmpty(),
+    check('postCode')
+        .not()
+        .isEmpty(),
+    check('phoneNr')
+        .not()
+        .isEmpty(),
+], usersControllers.updateUser);
 router.post('/order', usersControllers.newOrder);
+router.get('/order/:uid', usersControllers.getUsersOrders);
 
 module.exports = router;

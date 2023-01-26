@@ -1,4 +1,5 @@
 const Item = require('../models/item');
+const user = require('../models/user');
 
 const getItemById = async (req, res, next) => {
     const itemId = req.params.id;
