@@ -34,10 +34,8 @@ router.post('/signup', [
         .not()
         .isEmpty(),
 ], usersControllers.signup);
-
-router.patch('/updatedata', [
-    check('password')
-        .isLength({ min: 6 }),
+router.get('/userdata/:uid', usersControllers.getUsersData);
+router.post('/updatedata', [
     check('firstName')
         .not()
         .isEmpty(),

@@ -119,6 +119,35 @@ const login = async (req, res, next) => {
     res.json({ user: userExist.id, email: userExist.email, token });
 };
 
+const getUsersData = async (req, res, next) => {
+    const userId = req.params.uid;
+
+    let user;
+    try {
+        user = await User.findById(userId);
+    } catch (err) {
+        const error = new Error('Fetching data failed');
+        error.code = 500;
+        return next(error);
+    }
+
+    if (!user) {
+        const error = new Error('User not found');
+        error.code = 500;
+        return next(error);
+    }
+
+    res.json({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        street: user.street,
+        houseNr: user.houseNr,
+        postCode: user.postCode,
+        town: user.town,
+        phoneNr: user.phoneNr
+    });
+};
+
 const updateUser = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -127,7 +156,7 @@ const updateUser = async (req, res, next) => {
         return next(error);
     }
 
-    const { id, password, firstName, lastName, street, houseNr, postCode, town, phoneNr } = req.body;
+    const { id, firstName, lastName, street, houseNr, postCode, town, phoneNr } = req.body;
 
 
     let user;
@@ -239,6 +268,7 @@ const getUsersOrders = async (req, res, next) => {
 
 exports.signup = signup;
 exports.login = login;
+exports.getUsersData = getUsersData;
 exports.updateUser = updateUser;
 exports.newOrder = newOrder;
 exports.getUsersOrders = getUsersOrders;
