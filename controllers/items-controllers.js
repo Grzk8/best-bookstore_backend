@@ -35,6 +35,19 @@ const getItemsByCategory = async (req, res, next) => {
     res.json({ category: categoryResponse });
 };
 
+const getItemsBySale = async (req, res, next) => {
+    let saleResponse;
+
+    try {
+        saleResponse = await Item.find({ salePrice: { $gt: 0 } });
+    } catch {
+        const error = new Error('Items not found');
+        error.code = 500;
+        return next(error);
+    }
+    res.json({ salePrice: saleResponse });
+};
+
 const getItemByNewest = async (req, res, next) => {
     let newestResponse
 
@@ -95,6 +108,7 @@ const createItem = async (req, res, next) => {
 
 exports.getItemById = getItemById;
 exports.createItem = createItem;
+exports.getItemsBySale = getItemsBySale;
 exports.getItemByNewest = getItemByNewest;
 exports.getItemsByCategory = getItemsByCategory;
 exports.postSearch = postSearch;

@@ -9,7 +9,8 @@ const itemSchema = new Shema({
     author: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: String, required: true },
-    image: { type: String, required: true }
+    image: { type: String, required: true },
+    salePrice: { type: String, require: false }
 });
 
 module.exports = mongoose.model('Item', itemSchema);
