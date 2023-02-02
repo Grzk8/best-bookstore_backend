@@ -52,7 +52,7 @@ const getItemByNewest = async (req, res, next) => {
     let newestResponse
 
     try {
-        newestResponse = await Item.find().sort({ createdAt: -1 }).limit(10)
+        newestResponse = await Item.find().sort({ createdAt: -1 }).limit(12)
     } catch {
         const error = new Error('Items not found');
         error.code = 500;
