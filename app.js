@@ -25,7 +25,7 @@ app.use('/api/users', usersRoutes);
 mongoose
     .connect(`mongodb+srv://grzesiek:grzesiek@cluster0.wcshf.mongodb.net/best-bookstore?retryWrites=true&w=majority`)
     .then(() => {
-        app.listen(process.env.PORT || 8000);
+        app.listen(8000);
     })
     .catch(err => {
         console.log(err);

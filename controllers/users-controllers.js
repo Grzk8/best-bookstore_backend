@@ -62,7 +62,7 @@ const signup = async (req, res, next) => {
 
     let token;
     try {
-        token = jwt.sign({ userId: createUser.id, email: createUser.email },  qweasd123, { expiresIn: '1h' });
+        token = jwt.sign({ userId: createUser.id, email: createUser.email },  'qweasd123', { expiresIn: '1h' });
     } catch (err) {
         const error = new Error('Signing up failed');
         error.code = 500;
@@ -74,8 +74,6 @@ const signup = async (req, res, next) => {
 
 const login = async (req, res, next) => {
     const { email, password } = req.body;
-
-    console.log(email, password)
 
     let userExist;
     try {
@@ -109,12 +107,14 @@ const login = async (req, res, next) => {
 
     let token;
     try {
-        token = jwt.sign({ userId: userExist.id, email: userExist.email },  qweasd123, { expiresIn: '1h' });
+        token = jwt.sign({ userId: userExist.id, email: userExist.email },  'qweasd123', { expiresIn: '1h' });
     } catch (err) {
         const error = new Error('Logging in failed');
         error.code = 500;
         return next(error);
     }
+
+    console.log(userExist.id, userExist.email, token);
 
     res.json({ user: userExist.id, email: userExist.email, token });
 };
