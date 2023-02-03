@@ -23,7 +23,7 @@ app.use('/api/items', itemsRoutes);
 app.use('/api/users', usersRoutes);
 
 mongoose
-    .connect('mongodb+srv://grzesiek:grzesiek@cluster0.wcshf.mongodb.net/best-bookstore?retryWrites=true&w=majority')
+    .connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.wcshf.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`)
     .then(() => {
         app.listen(8000);
     })

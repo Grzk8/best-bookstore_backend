@@ -1,0 +1,8 @@
+{
+    "env": {
+        "DB_USER" : "grzesiek",
+        "DB_PASSWORD" : "grzesiek",
+        "DB_NAME": "best-bookstore",
+        "JWT_KEY": "qweasd123"
+    }
+}
