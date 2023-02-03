@@ -2,7 +2,7 @@
   "name": "best-bookstore_backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "engines": {
     "node": "14.x"
   },
